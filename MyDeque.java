@@ -5,7 +5,7 @@ public class MyDeque<E>{
   @SuppressWarnings("unchecked")
   public MyDeque(){
     data = (E[])new Object[10];
-    start=0;end=0;
+    start=4;end=4;
     size=0;
   }
   @SuppressWarnings("unchecked")
@@ -29,6 +29,13 @@ public class MyDeque<E>{
       return ans;
     }
   }
+  public String toStringDebug(){
+    String ans = "{";
+    for (int i=0;i<data.length-1;i++) {
+        ans+=data[i]+",";
+    }
+    return ans+data[data.length-1]+"}";
+  }
   public void addFirst(E element){
     if (data[start]==null) data[start]=element;
     else if (start-1>=0) {
@@ -40,14 +47,16 @@ public class MyDeque<E>{
     size++;
   }
   public void addLast(E element){
-    if (data[end]==null) {
+    if (end+1>=data.length){
+      //resize();
+      //data[end+1]=element;
+      data[data.length%end]=element;
+    }
+    else if (data[end]==null) {
       data[end]=element;
       end--;
-    }
-    else if (end+1<data.length){
-      data[end+1]=element;
     } else {
-      data[(end+1)%(size+1)]=element;
+      data[end+1]=element;
     }
     end++;
     size++;
@@ -64,11 +73,17 @@ public class MyDeque<E>{
   public E getLast(){
     return data[0];
   }
-
+  @SuppressWarnings("unchecked")
+  public void resize(){
+    E[] newA = (E[])new Object[data.length*2];
+    for (int i=0;i<data.length;i++) {
+      newA[i]=data[i];
+    }
+    data = newA;
+  }
   public static void main(String[] args) {
     MyDeque<Integer> m = new MyDeque<Integer>();
-    m.addLast(1);
-    m.addLast(2);
-    System.out.println(m);
+    for (int i=0;i<9;i++) m.addLast(i+4);
+    System.out.println(m.toStringDebug());
   }
 }
