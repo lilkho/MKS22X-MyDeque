@@ -19,15 +19,11 @@ public class MyDeque<E>{
     return size;
   }
   public String toString(){
-    String ans = "{";
-    if (start<=end) {
-      for (int i=start;i<end-start;i++) {
-          ans+=data[i]+",";
-      }
-      return ans+data[end]+"}";
-    } else {
-      return ans;
+    String ans = "[";
+    for (int i=start;i<start+size-1;i++) {
+      ans+=data[i%data.length]+",";
     }
+    return ans+data[end]+"]";
   }
   public String toStringDebug(){
     String ans = "{";
@@ -37,22 +33,27 @@ public class MyDeque<E>{
     return ans+data[data.length-1]+"}";
   }
   public void addFirst(E element){
-    if (data[start]==null) data[start]=element;
-    else if (start-1>=0) {
-
+    if (start<0) {
+      int newStart = data.length+start;
+      data[newStart]=element;
+      start=newStart;
+    } else if (data[start]==null) {
+      data[start]=element;
+      start--;
     } else {
-
+      data[start-1]=element;
+      start--;
     }
-    start--;
     size++;
   }
   public void addLast(E element){
     if (end+1>=data.length){
       //resize();
       //data[end+1]=element;
-      data[data.length%end]=element;
-    }
-    else if (data[end]==null) {
+      int newEnd = (data.length)%(start+size);
+      data[newEnd]=element;
+      end=newEnd-1;
+    } else if (data[end]==null) {
       data[end]=element;
       end--;
     } else {
@@ -62,16 +63,23 @@ public class MyDeque<E>{
     size++;
   }
   public E removeFirst(){
-    return data[0];
+    E first = getFirst();
+    start++;
+    size--;
+    return first;
   }
   public E removeLast(){
-    return data[0];
+    E last = getLast();
+    if (start>end) end=data.length-end;
+    else end--;
+    size--;
+    return last;
   }
   public E getFirst(){
-    return data[0];
+    return data[start];
   }
   public E getLast(){
-    return data[0];
+    return data[end];
   }
   @SuppressWarnings("unchecked")
   public void resize(){
@@ -83,7 +91,20 @@ public class MyDeque<E>{
   }
   public static void main(String[] args) {
     MyDeque<Integer> m = new MyDeque<Integer>();
-    for (int i=0;i<9;i++) m.addLast(i+4);
+    for (int i=0;i<8;i++) m.addLast(i+4);
+    System.out.println(m);
     System.out.println(m.toStringDebug());
+    System.out.println(m.getLast());
+    System.out.println(m.getFirst());
+    System.out.println(m.removeLast());
+    System.out.println(m+"/");
+    MyDeque<Integer> m2 = new MyDeque<Integer>();
+    for (int i=0;i<7;i++) m2.addFirst(i+4);
+    System.out.println(m2);
+    System.out.println(m2.toStringDebug());
+    System.out.println(m2.getLast());
+    System.out.println(m2.getFirst());
+    System.out.println(m2.removeFirst());
+    System.out.println(m2);
   }
 }
