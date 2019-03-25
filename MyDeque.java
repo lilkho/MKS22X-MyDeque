@@ -33,6 +33,7 @@ public class MyDeque<E>{
     return ans+data[data.length-1]+"}";
   }
   public void addFirst(E element){
+    if (size+1>data.length) resize();
     if (start<0) {
       int newStart = data.length+start;
       data[newStart]=element;
@@ -47,9 +48,8 @@ public class MyDeque<E>{
     size++;
   }
   public void addLast(E element){
-    if (end+1>=data.length){
-      //resize();
-      //data[end+1]=element;
+    if (size+1>data.length) resize();
+    if (end+1>=data.length) {
       int newEnd = (data.length)%(start+size);
       data[newEnd]=element;
       end=newEnd-1;
@@ -70,8 +70,7 @@ public class MyDeque<E>{
   }
   public E removeLast(){
     E last = getLast();
-    if (start>end) end=data.length-end;
-    else end--;
+    end--;
     size--;
     return last;
   }
@@ -83,15 +82,19 @@ public class MyDeque<E>{
   }
   @SuppressWarnings("unchecked")
   public void resize(){
-    E[] newA = (E[])new Object[data.length*2];
-    for (int i=0;i<data.length;i++) {
-      newA[i]=data[i];
+    E[] newA = (E[])new Object[data.length*data.length];
+    int x=start;
+    for (int i=newA.length/2;x<start+size;i++) {
+      newA[i]=data[x%data.length];
+      x++;
     }
+    start=newA.length/2;
+    end=newA.length/2+size-1;
     data = newA;
   }
   public static void main(String[] args) {
     MyDeque<Integer> m = new MyDeque<Integer>();
-    for (int i=0;i<8;i++) m.addLast(i+4);
+    for (int i=0;i<11;i++) m.addLast(i+4);
     System.out.println(m);
     System.out.println(m.toStringDebug());
     System.out.println(m.getLast());
@@ -99,7 +102,7 @@ public class MyDeque<E>{
     System.out.println(m.removeLast());
     System.out.println(m+"/");
     MyDeque<Integer> m2 = new MyDeque<Integer>();
-    for (int i=0;i<7;i++) m2.addFirst(i+4);
+    for (int i=0;i<11;i++) m2.addFirst(i+4);
     System.out.println(m2);
     System.out.println(m2.toStringDebug());
     System.out.println(m2.getLast());
