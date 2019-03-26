@@ -9,19 +9,24 @@ public class Calculator{
       String[] tokens = s.split(" ",s.length());
       MyDeque<Double> nums = new MyDeque<Double>();
       for (int i=0;i<tokens.length;i++) {
-        if (tokens[i].equals('+') || tokens[i].equals('-')
-        || tokens[i].equals('*') || tokens[i].equals('/')
-        || tokens[i].equals('%')) {
-
+        if (tokens[i].equals("+")) {
+          nums.addLast(nums.removeLast()+nums.removeLast());
+        } else if (tokens[i].equals("-")) {
+          double sec = nums.removeLast();
+          nums.addLast(nums.removeLast()-sec);
+        } else if (tokens[i].equals("*")) {
+          nums.addLast(nums.removeLast()*nums.removeLast());
+        } else if (tokens[i].equals("/")) {
+          double sec = nums.removeLast();
+          nums.addLast(nums.removeLast()/sec);
+        } else if (tokens[i].equals("%")) {
+          double sec = nums.removeLast();
+          nums.addLast(nums.removeLast()%sec);
         } else {
           nums.addLast(Double.parseDouble(tokens[i]));
         }
       }
-      System.out.println(nums);
-      return 0;
+      return nums.getLast();
     }
 
-    public static void main(String[] args) {
-      System.out.println(eval("8 2 + 99 9 - * 2 + 9 -"));
-    }
 }
