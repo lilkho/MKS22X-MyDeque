@@ -104,7 +104,7 @@ public class MyDeque<E>{
   }
   public static void main(String[] args) {
     MyDeque<Integer> m = new MyDeque<Integer>();
-    for (int i=0;i<11;i++) m.addLast(i+4);
+    for (int i=0;i<11;i++) m.addLast(i);
     System.out.println(m);
     //System.out.println(m.toStringDebug());
     System.out.println(m.getLast());
@@ -112,7 +112,7 @@ public class MyDeque<E>{
     System.out.println(m.removeLast());
     System.out.println(m+"/");
     MyDeque<Integer> m2 = new MyDeque<Integer>();
-    for (int i=0;i<11;i++) m2.addFirst(i+4);
+    for (int i=0;i<11;i++) m2.addFirst(i);
     System.out.println(m2);
     //System.out.println(m2.toStringDebug());
     System.out.println(m2.getLast());
